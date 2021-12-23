@@ -1,0 +1,9 @@
+GET
+	### alle alcoholische dranken ophalen
+	### alle ijs dranken ophalen die guitgevonden zijn voor 1950
+PUT
+	###
+POST
+	###
+DELETE
+	### 
