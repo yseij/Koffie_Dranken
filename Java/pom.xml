@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>TestAPT</artifactId>
+    <artifactId>Java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TestAPT</name>
-    <description>TestAPT</description>
+    <name>Java</name>
+    <description>Java</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -39,21 +39,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>4.1.4.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.2.3.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
         </dependency>
     </dependencies>
 
