@@ -27,6 +27,25 @@ public class Koffie {
     public Koffie() {
     }
 
+    public Koffie(String name, String wheremade, String whenmade, String importantsingredient, String meaning, String soort) {
+        this.name = name;
+        this.wheremade = wheremade;
+        this.whenmade = whenmade;
+        this.importantsingredient = importantsingredient;
+        this.meaning = meaning;
+        this.soort = soort;
+    }
+
+    public Koffie(Long id, String name, String wheremade, String whenmade, String importantsingredient, String meaning, String soort) {
+        this.id = id;
+        this.name = name;
+        this.wheremade = wheremade;
+        this.whenmade = whenmade;
+        this.importantsingredient = importantsingredient;
+        this.meaning = meaning;
+        this.soort = soort;
+    }
+
     public String getName() {
         return name;
     }

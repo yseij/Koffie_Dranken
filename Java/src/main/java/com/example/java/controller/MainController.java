@@ -6,14 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MainController {
     @Autowired
     private KoffieRepository koffieRepository;
 
+    @GetMapping ({"/{id}"})
+    public Koffie GetById(@PathVariable Long id) {
+        return koffieRepository.getById(id);
+    }
+
     @GetMapping ({"/AlleKoffie"})
-    public List<Koffie> getKoffie() {;
+    public List<Koffie> GetAll() {
         return koffieRepository.findAll();
     }
 
@@ -22,13 +28,13 @@ public class MainController {
         return koffieRepository.findByNameContaining(naam);
     }
 
-    @GetMapping ({"/AlleKoffie/soort={soort}"})
-    public List<Koffie> GetKoffieByDate(@PathVariable String soort) {
-        return koffieRepository.findBySoortContaining(soort);
+    @GetMapping ({"/AlleKoffie/soort={soort}/name={name}"})
+    public Koffie GetKoffieBySoort(@PathVariable String soort, @PathVariable String name) {
+        return koffieRepository.findBySoortContainingAndAndNameContaining(soort, name);
     }
 
     @PostMapping("/PostKoffie")
-    public Koffie add(@RequestBody Koffie newKoffie)
+    public Koffie addKoffie(@RequestBody Koffie newKoffie)
     {
         Long maxid = koffieRepository.getMaxId();
         newKoffie.setId(maxid + 1);
@@ -36,11 +42,10 @@ public class MainController {
         return newKoffie;
     }
 
-    @PutMapping ("/PutKoffie/{id}")
-    public Koffie updateKoffie(@RequestBody Koffie updateKoffie, @PathVariable Long id)
+    @PutMapping ("/PutKoffie")
+    public Koffie updateKoffie(@RequestBody Koffie updateKoffie)
     {
-        Koffie koffie = koffieRepository.getById(id);
-        System.out.println(koffie);
+        Koffie koffie = koffieRepository.getById(updateKoffie.getId());
         koffie.setName(updateKoffie.getName());
         koffie.setSoort(updateKoffie.getSoort());
         koffie.setMeaning(updateKoffie.getMeaning());

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface KoffieRepository extends JpaRepository<Koffie, Long> {
     List<Koffie> findByNameContaining(String naam);
-    List<Koffie> findBySoortContaining(String soort);
+    Koffie findBySoortContainingAndAndNameContaining(String soort, String name);
     @Query("SELECT coalesce(max(ks.id), 0) FROM Koffie ks")
     Long getMaxId();
 }
