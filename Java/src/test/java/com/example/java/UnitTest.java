@@ -1,64 +1,162 @@
 package com.example.java;
 
 
-import com.example.java.controller.MainController;
 import com.example.java.model.Koffie;
 import com.example.java.repository.KoffieRepository;
-import org.checkerframework.checker.units.qual.K;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.MediaType;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
-public class UnitTest {
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//    @Autowired
-//    private MainController mainController;
-//    private KoffieRepository koffieRepository;
-//
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class UnitTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private KoffieRepository koffieRepository;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+
+    @Test
+    public void givenKoffie_whenGetKoffieBySortAndName_thenReturnJsonKoffie() throws Exception {
+        Koffie koffie1 = new Koffie(500L, "test1",
+                "test1",
+                "test1",
+                "test1",
+                "test1",
+                "test1");
+
+        given(koffieRepository.findBySoortContainingAndAndNameContaining("test1","test1")).willReturn(koffie1);
+
+        mockMvc.perform(get("/AlleKoffie/soort={soort}/name={name}","test1","test1"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("test1")))
+                .andExpect(jsonPath("$.when_made", is("test1")))
+                .andExpect(jsonPath("$.where_made", is("test1")))
+                .andExpect(jsonPath("$.importants_ingredient", is("test1")))
+                .andExpect(jsonPath("$.meaning", is("test1")))
+                .andExpect(jsonPath("$.soort", is("test1")));
+    }
+
+    @Test
+    public void givenKoffies_whenGetKoffieByName_thenReturnJsonKoffies() throws Exception {
+        Koffie koffie1 = new Koffie(500L, "test1",
+                "test1",
+                "test1",
+                "test1",
+                "test1",
+                "test1");
+        Koffie koffie2 = new Koffie(501L,"test2",
+                "test2",
+                "test2",
+                "test2",
+                "test2",
+                "test2");
+
+        List<Koffie> koffieList = new ArrayList<>();
+        koffieList.add(koffie1);
+        koffieList.add(koffie2);
+
+        given(koffieRepository.findByNameContaining("test")).willReturn(koffieList);
+
+        mockMvc.perform(get("/AlleKoffie/naam={naam}","test"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name", is("test1")))
+                .andExpect(jsonPath("$[0].when_made", is("test1")))
+                .andExpect(jsonPath("$[0].where_made", is("test1")))
+                .andExpect(jsonPath("$[0].importants_ingredient", is("test1")))
+                .andExpect(jsonPath("$[0].meaning", is("test1")))
+                .andExpect(jsonPath("$[0].soort", is("test1")));
+    }
+
+    @Test
+    public void givenKoffie_whenPostKoffie_thenReturnJsonKoffies() throws Exception {
+        Koffie koffieForPost = new Koffie(504L, "test5",
+                "test5",
+                "test5",
+                "test5",
+                "test5",
+                "test5");
+
+        mockMvc.perform(post("/PostKoffie")
+                .content(mapper.writeValueAsString(koffieForPost))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("test5")))
+                .andExpect(jsonPath("$.when_made", is("test5")))
+                .andExpect(jsonPath("$.where_made", is("test5")))
+                .andExpect(jsonPath("$.importants_ingredient", is("test5")))
+                .andExpect(jsonPath("$.meaning", is("test5")))
+                .andExpect(jsonPath("$.soort", is("test5")));
+    }
+
 //    @Test
-//    void TestGetWithName() {
-//        List<Koffie> testKoffie = mainController.GetKoffieWithName("Espresso");
-//        assertEquals("Espresso", testKoffie.get(0).getName());
-//        assertEquals("onder druk", testKoffie.get(0).getMeaning());
-//        assertEquals("PureVorm", testKoffie.get(0).getSoort());
-//        assertEquals("1900", testKoffie.get(0).getWhen_made());
-//        assertEquals("Italië", testKoffie.get(0).getWhere_made());
-//        assertEquals("Koffie", testKoffie.get(0).getImportants_ingredient());
-//    }
+//    public void givenKoffie_whenPutKoffie_thenReturnJsonKoffie() throws Exception{
+//        Koffie Koffie = new Koffie(501L,"test2",
+//                "test2",
+//                "test2",
+//                "test2",
+//                "test2",
+//                "test2");
 //
-//    @Test
-//    void TestGetWithSoort() {
-//        Koffie testKoffie = mainController.GetKoffieBySoort("PureVorm", "Groene Koffie");
-//        assertEquals("Groene Koffie", testKoffie.getName());
-//        assertEquals("Arabische Koffie", testKoffie.getMeaning());
-//        assertEquals("PureVorm", testKoffie.getSoort());
-//        assertEquals("1100", testKoffie.getWhen_made());
-//        assertEquals("Arabië", testKoffie.getWhere_made());
-//        assertEquals("Groene bonen", testKoffie.getImportants_ingredient());
-//    }
+//        given(koffieRepository.findBySoortContainingAndAndNameContaining("test2","test2")).willReturn(Koffie);
 //
-//    @Test
-//    void TestPostKoffie(){
-//        Koffie newKoffie = new Koffie("test100", "test100", "test100", "test100", "test100", "test100");
-//        Koffie newKoffie2 = mainController.addKoffie(newKoffie);
-//        assertEquals("test100", newKoffie2.getName());
-//        assertEquals("test100", newKoffie2.getMeaning());
-//        assertEquals("test100", newKoffie2.getSoort());
-//        assertEquals("test100", newKoffie2.getWhen_made());
-//        assertEquals("test100", newKoffie2.getWhere_made());
-//        assertEquals("test100", newKoffie2.getImportants_ingredient());
-//    }
+//        Koffie updateKoffie = new Koffie(501L,"test2",
+//                "test2",
+//                "test2",
+//                "test2Update",
+//                "test2",
+//                "test2");
 //
-//    @Test
-//    void TestPutKoffie(){
-//        Koffie newKoffie = new Koffie();
-//        newKoffie.setMeaning("test");
-//        Koffie newKoffie2 = mainController.updateKoffie(newKoffie, 4L);
-//        assertEquals("test", newKoffie2.getMeaning());
+//        mockMvc.perform(put("/PutKoffie")
+//                .content(mapper.writeValueAsString(updateKoffie))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.name", is("test2")))
+//                .andExpect(jsonPath("$.when_made", is("test2")))
+//                .andExpect(jsonPath("$.where_made", is("test2")))
+//                .andExpect(jsonPath("$.importants_ingredient", is("test2Update")))
+//                .andExpect(jsonPath("$.meaning", is("test2")))
+//                .andExpect(jsonPath("$.soort", is("test2")));
 //    }
+
+    @Test
+    public void givenKoffie_whenDeleteKoffie_thenStatusOk() throws Exception{
+        Koffie koffieForDelete = new Koffie(599L,"test599",
+                "test599",
+                "test599",
+                "test599",
+                "test599",
+                "test599");
+
+        given(koffieRepository.findBySoortContainingAndAndNameContaining("test599","test599")).willReturn(koffieForDelete);
+
+        mockMvc.perform(delete("/DeleteKoffie/{id}",599)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
