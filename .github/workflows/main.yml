@@ -19,11 +19,11 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           # Set health checks to wait until postgres has started
-#         options: >-
-#           --health-cmd pg_isready
-#           --health-interval 10s
-#           --health-timeout 5s
-#           --health-retries 5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
@@ -40,27 +40,6 @@ jobs:
 #           # The database role to use when no client authentication is provided
 #           PGRST_DB_ANON_ROLE: postgres
           
-    steps:
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.15
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-
-    - name: Install golang-migrate
-      run: |
-        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.12.2/migrate.linux-amd64.tar.gz | tar xvz
-        sudo mv migrate.linux-amd64 /usr/bin/migrate
-        which migrate
-
-    - name: Run migrations
-      run: make migrateup
-
-    - name: Test
-      run: make test
   build:
     needs: container-job
     name: Build
