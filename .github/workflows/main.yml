@@ -27,18 +27,18 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-        volumes:
-          - /Docker/init.sql:/docker-entrypoint-initdb.d/init.sql
-      postgrest:
-        image: postgrest/postgrest:latest
-        ports:
-          - "3000:3000"
-        env:
-          PGRST_DB_URI: postgres://postgres:postgres@postgrest-db:5432/postgres
-          # The name of which database schema to expose to REST clients
-          PGRST_DB_SCHEMA: public
-          # The database role to use when no client authentication is provided
-          PGRST_DB_ANON_ROLE: postgres
+#         volumes:
+#           - /Docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+#       postgrest:
+#         image: postgrest/postgrest:latest
+#         ports:
+#           - "3000:3000"
+#         env:
+#           PGRST_DB_URI: postgres://postgres:postgres@postgrest-db:5432/postgres
+#           # The name of which database schema to expose to REST clients
+#           PGRST_DB_SCHEMA: public
+#           # The database role to use when no client authentication is provided
+#           PGRST_DB_ANON_ROLE: postgres
           
     steps:
       # Downloads a copy of the code in your repository before running CI tests
