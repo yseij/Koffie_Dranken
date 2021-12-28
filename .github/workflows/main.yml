@@ -42,7 +42,6 @@ jobs:
           
   build:
     needs: container-job
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
