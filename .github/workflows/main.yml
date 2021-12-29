@@ -18,41 +18,39 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
-          # Set health checks to wait until postgres has started
-#         options: >-
-#           --health-cmd pg_isready
-#           --health-interval 10s
-#           --health-timeout 5s
-#           --health-retries 5
+#           Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
           # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-        volumes:
-          - /Docker/init.sql:/docker-entrypoint-initdb.d/init.sql
-#       postgrest:
-#         image: postgrest/postgrest:latest
-#         ports:
-#           - "3000:3000"
-#         env:
-#           PGRST_DB_URI: postgres://postgres:postgres@postgrest-db:5432/postgres
-#           # The name of which database schema to expose to REST clients
-#           PGRST_DB_SCHEMA: public
-#           # The database role to use when no client authentication is provided
-#           PGRST_DB_ANON_ROLE: postgres
-          
+          - 5432:5432          
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.13
 
-      # queries database with postgres client
-      - name: Query database
-        run: psql -h postgres -d postgres -U postgres -c 'SELECT 1;'
-        env:
-          # postgress password is required; alternatively, you can run:
-          # `PGPASSWORD=postgres_password psql ...`
-          PGPASSWORD: postgres
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          fi
+      - name: Run migrations
+        run: psql -f Docker/init.sql postgresql://postgres:postgres@localhost:5432/postgres
+      - name: Build
+        run: go build -v .
+      - name: Test
+        run: go test -v .
+        env: 
+          DATABASE_DSN: "user=postgres host=localhost password=postgres port=5432 database=postgres sslmode=disable"
 #   build:
 #     needs: container-job
 #     name: Build
