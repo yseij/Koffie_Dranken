@@ -44,7 +44,7 @@ jobs:
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
   build:
-#     needs: container-job
+    needs: container-job
     name: Build
     runs-on: ubuntu-latest
     steps:
