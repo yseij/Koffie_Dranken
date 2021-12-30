@@ -38,6 +38,8 @@ spec:
             - containerPort: 5432       # The port that the container exposes
               name: postgres
           env:                    # Environment variables supplied to the Pod
+            - name: POSTGRES_USER
+              value: "postgres"
             - name: POSTGRES_PASSWORD
               value: "postgres"
 ---
