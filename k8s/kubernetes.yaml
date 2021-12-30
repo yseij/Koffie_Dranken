@@ -66,12 +66,15 @@ spec:
               cpu: 0.2
               memory: "200Mi"
           env:                    # Environment variables supplied to the Pod
-            - name: POSTGRES_USERNAME
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: POSTGRES_USER
               value: "postgres"
             - name: POSTGRES_PASSWORD
               value: "postgres"
             - name: POSTGRES_HOST
               value: "dranken-service-postgres"
+              POSTGRES_HOST_AUTH_METHOD: "trust"
 ---
 apiVersion: v1                      # API version
 kind: Service                       # Type of the kubernetes resource
