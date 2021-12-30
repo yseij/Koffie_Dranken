@@ -6,7 +6,7 @@ metadata:
     app: koffie-dranken-service
 spec:
   ports:
-    - port: 3306
+    - port: 5432
   selector:                       # Selects any Pod with labels `app=book-info-service,tier=mysql`
     app: koffie-dranken-service
     tier: postgres
@@ -38,7 +38,7 @@ spec:
             - name: POSTGRES_ROOT_PASSWORD
               value: "postgres"           # Read environment variables from kubernetes secrets
           ports:
-            - containerPort: 3306       # The port that the container exposes
+            - containerPort: 5432       # The port that the container exposes
               name: postgres
 ---
 apiVersion: apps/v1           # API version
