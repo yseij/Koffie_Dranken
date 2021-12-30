@@ -1,70 +1,88 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1                    # API version
+kind: Service                     # Type of kubernetes resource
 metadata:
-  name: koffie_dranken-service-postgres-deployment
-  labels:
-    app: koffie_dranken-service
+  name: dranken-service-postgres   # Name of the service
+  labels:                         # Labels that will be applied to the service
+    app: dranken-service
 spec:
-  serviceName: koffie_dranken-service
-  replicas: 1
-  selector:
-    matchLabels:
-      app: koffie_dranken-service
-  template:
-    metadata:
-      labels:
-        app: koffie_dranken-service
-    spec:
-      containers:
-        - image: postgres:9.4
-          name: db
-          env:
-          - name: POSTGRES_USER
-            value: okteto
-          - name: POSTGRES_PASSWORD
-            value: okteto
-          - name: POSTGRES_DB
-            value: okteto
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: data
-              subPath: data
-  volumeClaimTemplates:
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: data
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: koffie_dranken-service-postgres
-spec:
-  type: ClusterIP
   ports:
-  - port: 5432
-    targetPort: 5432
+    - port: 5432
+  selector:                       # Selects any Pod with labels `app=book-info-service,tier=mysql`
+    app: dranken-service
+    tier: postgres
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: dranken-service-postgres-deployment           # Name of the deployment
+  labels:                           # Labels applied to this deployment
+    app: dranken-service
+spec:
   selector:
-    app: koffie_dranken-service
-    
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: dranken-service
+      tier: postgres
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: dranken-service
+        tier: postgres
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+        - image: postgres                # The container image
+          name: postgres
+          ports:
+            - containerPort: 5432       # The port that the container exposes
+              name: postgres
+---
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: dranken-service-server-deployment    # Name of the deployment
+  labels:                     # Labels that will be applied to this deployment
+    app: dranken-service-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: dranken-service-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: dranken-service-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+        - name: dranken-service-server
+          image: yseij21112001/dranken-service
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8051 # The port that the container exposes
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:                    # Environment variables supplied to the Pod
+            - name: POSTGRES_USERNAME
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_HOST
+              value: "dranken-service-postgres"
+---
 apiVersion: v1                      # API version
 kind: Service                       # Type of the kubernetes resource
 metadata:
-  name: koffie_dranken-server    # Name of the service
+  name: dranken-service-server    # Name of the service
   labels:                           # Labels that will be applied to this service
-    app: koffie_dranken-server
+    app: dranken-service-server
 spec:
   type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
   selector:
-    app: koffie_dranken-server   # The service exposes Pods with label `app=book-info-service-server`
+    app: dranken-service-server   # The service exposes Pods with label `app=book-info-service-server`
   ports:                            # Forward incoming connections on port 8080 to the target port 8051
     - name: http
       port: 8051
