@@ -39,9 +39,9 @@ spec:
               name: postgres
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
-              value: "okteto"
+              value: "postgres"
             - name: POSTGRES_PASSWORD
-              value: "okteto"
+              value: "postgres"
             - name: POSTGRES_HOST_AUTH_METHOD
               value: "trust"
 ---
@@ -74,7 +74,9 @@ spec:
               memory: "200Mi"
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
-              value: "okteto"
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
             - name: POSTGRES_HOST
               value: "dranken-service-postgres"
 ---
