@@ -1,45 +1,71 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-list
+  name: koffie_dranken-service-postgres-deployment
+  labels:
+    app: koffie_dranken-service
 spec:
+  serviceName: koffie_dranken-service
   replicas: 1
   selector:
     matchLabels:
-      app: todo-list
+      app: koffie_dranken-service
   template:
     metadata:
       labels:
-        app: todo-list
+        app: koffie_dranken-service
     spec:
       containers:
-      - image: okteto.dev/todo-list
-        name: todo-list
-        env:
-          - name: POSTGRESQL_HOST
-            value: postgres
-          - name: POSTGRESQL_USERNAME
-            value: postgres
-          - name: POSTGRESQL_PASSWORD
-            value: postgres
-          - name: POSTGRESQL_DATABASE
-            value: postgres
-        readinessProbe:
-          periodSeconds: 1
-          httpGet:
-            path: /healthz
-            port: 8080
+        - image: postgres:9.4
+          name: db
+          env:
+          - name: POSTGRES_USER
+            value: okteto
+          - name: POSTGRES_PASSWORD
+            value: okteto
+          - name: POSTGRES_DB
+            value: okteto
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: data
+              subPath: data
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-list
+  name: koffie_dranken-service-postgres
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-  - name: "todo-list"
-    port: 8080
+  - port: 5432
+    targetPort: 5432
   selector:
-    app: todo-list
+    app: koffie_dranken-service
+    
+apiVersion: v1                      # API version
+kind: Service                       # Type of the kubernetes resource
+metadata:
+  name: koffie_dranken-server    # Name of the service
+  labels:                           # Labels that will be applied to this service
+    app: koffie_dranken-server
+spec:
+  type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
+  selector:
+    app: koffie_dranken-server   # The service exposes Pods with label `app=book-info-service-server`
+  ports:                            # Forward incoming connections on port 8080 to the target port 8051
+    - name: http
+      port: 8051
+      targetPort: 8051
