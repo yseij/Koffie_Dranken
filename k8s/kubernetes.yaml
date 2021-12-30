@@ -1,92 +1,36 @@
-apiVersion: v1                    # API version
-kind: Service                     # Type of kubernetes resource
-metadata:
-  name: koffie-dranken-postgres   # Name of the service
-  labels:                         # Labels that will be applied to the service
-    app: koffie-dranken-service
-spec:
-  ports:
-    - port: 5432
-  selector:                       # Selects any Pod with labels `app=book-info-service,tier=mysql`
-    app: koffie-dranken-service
-    tier: postgres
-  clusterIP: None
----
-apiVersion: apps/v1
-kind: Deployment                    # Type of the kubernetes resource
-metadata:
-  name: koffie-dranken-postgres-deployment           # Name of the deployment
-  labels:                           # Labels applied to this deployment
-    app: koffie-dranken-service
-spec:
-  selector:
-    matchLabels:                    # This deployment applies to the Pods matching the specified labels
-      app: koffie-dranken-service
-      tier: postgres
-  strategy:
-    type: Recreate
-  template:                         # Template for the Pods in this deployment
-    metadata:
-      labels:                       # Labels to be applied to the Pods in this deployment
-        app: koffie-dranken-service
-        tier: postgres
-    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
-      containers:
-        - image: postgres                # The container image
-          name: postgres
-          env:                        # Environment variables passed to the container
-            - name: POSTGRES_ROOT_PASSWORD
-              value: "postgres"           # Read environment variables from kubernetes secrets
-          ports:
-            - containerPort: 5432       # The port that the container exposes
-              name: postgres
----
-apiVersion: apps/v1           # API version
-kind: Deployment              # Type of kubernetes resource
-metadata:
-  name: koffie-dranken-postgres-deployment    # Name of the deployment
-  labels:                     # Labels that will be applied to this deployment
-    app: boon-service-server
-spec:
-  replicas: 1                 # No. of replicas/pods to run in this deployment
-  selector:
-    matchLabels:              # The deployment applies to any pods mayching the specified labels
-      app: koffie-dranken-service-server
-  template:                   # Template for creating the pods in this deployment
-    metadata:
-      labels:                 # Labels that will be applied to each Pod in this deployment
-        app: koffie-dranken-service-server
-    spec:                     # Spec for the containers that will be run in the Pods
-      containers:
-        - name: koffie-dranken-service-server
-          image: yseij/koffie-dranken-service
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 8051 # The port that the container exposes
-          resources:
-            limits:
-              cpu: 0.2
-              memory: "200Mi"
-          env:                    # Environment variables supplied to the Pod
-            - name: POSTGRES_DB_USERNAME
-              value: "postgres"
-            - name: POSTGRES_DB_PASSWORD
-              value: "postgres"
-            - name: POSTGRES_DB_HOST
-              value: "koffie-dranken-service-postgres"
----
-apiVersion: v1                      # API version
-kind: Service                       # Type of the kubernetes resource
-metadata:
-  name: koffie-dranken-service-server    # Name of the service
-  labels:                           # Labels that will be applied to this service
-    app: koffie-dranken-service-server
-spec:
-  type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
-  selector:
-    app: koffie-dranken-service-server   # The service exposes Pods with label `app=book-info-service-server`
-  ports:                            # Forward incoming connections on port 8080 to the target port 8051
-    - name: http
-      port: 8051
-      targetPort: 8051
+services:
+  vote:
+    public: true
+    image: okteto/vote:1
+    replicas: 2
+    ports:
+      - 80
+
+  result:
+    public: true
+    image: okteto/result:1
+    command: node server.js
+    ports:
+      - 80
+
+  worker:
+    image: okteto/worker:1
+    stop_grace_period: 60
+
+  db:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432
+    volumes:
+      - /var/lib/postgresql/data
+    resources:
+      cpu: 300m
+      memory: 500Mi
+      storage: 5Gi
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379
