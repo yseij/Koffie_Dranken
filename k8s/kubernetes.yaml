@@ -75,6 +75,8 @@ spec:
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
               value: "okteto"
+            - name: PGHOST
+              value: "dranken-service-postgres"
 ---
 apiVersion: v1                      # API version
 kind: Service                       # Type of the kubernetes resource
