@@ -75,7 +75,7 @@ spec:
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
               value: "okteto"
-            - name: PGHOST
+            - name: POSTGRES_HOST
               value: "dranken-service-postgres"
 ---
 apiVersion: v1                      # API version
