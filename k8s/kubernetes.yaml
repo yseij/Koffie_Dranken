@@ -6,6 +6,7 @@ metadata:
     app: dranken-service
 spec:
   ports:
+    - protocol: TCP
     - port: 5432
   selector:                       # Selects any Pod with labels `app=book-info-service,tier=mysql`
     app: dranken-service
