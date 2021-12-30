@@ -32,7 +32,7 @@ spec:
         tier: postgres
     spec:                           # The spec for the containers that will be run inside the Pods in this deployment
       containers:
-        - image: postgres                # The container image
+        - image: postgres:13                # The container image
           name: postgres
           ports:
             - containerPort: 5432       # The port that the container exposes
