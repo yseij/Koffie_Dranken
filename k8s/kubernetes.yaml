@@ -17,13 +17,13 @@ spec:
         name: todo-list
         env:
           - name: POSTGRESQL_HOST
-            value: db
+            value: postgres
           - name: POSTGRESQL_USERNAME
-            value: okteto
+            value: postgres
           - name: POSTGRESQL_PASSWORD
-            value: okteto
+            value: postgres
           - name: POSTGRESQL_DATABASE
-            value: okteto
+            value: postgres
         readinessProbe:
           periodSeconds: 1
           httpGet:
