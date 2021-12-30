@@ -40,8 +40,6 @@ spec:
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
               value: "okteto"
-            - name: POSTGRES_PASSWORD
-              value: "okteto"
 ---
 apiVersion: apps/v1           # API version
 kind: Deployment              # Type of kubernetes resource
@@ -72,8 +70,6 @@ spec:
               memory: "200Mi"
           env:                    # Environment variables supplied to the Pod
             - name: POSTGRES_USER
-              value: "okteto"
-            - name: POSTGRES_PASSWORD
               value: "okteto"
 ---
 apiVersion: v1                      # API version
