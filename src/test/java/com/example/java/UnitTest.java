@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 
@@ -112,36 +111,36 @@ public class UnitTest {
                 .andExpect(jsonPath("$.soort", is("test5")));
     }
 
-//    @Test
-//    public void givenKoffie_whenPutKoffie_thenReturnJsonKoffie() throws Exception{
-//        Koffie Koffie = new Koffie(501L,"test2",
-//                "test2",
-//                "test2",
-//                "test2",
-//                "test2",
-//                "test2");
-//
-//        given(koffieRepository.findBySoortContainingAndAndNameContaining("test2","test2")).willReturn(Koffie);
-//
-//        Koffie updateKoffie = new Koffie(501L,"test2",
-//                "test2",
-//                "test2",
-//                "test2Update",
-//                "test2",
-//                "test2");
-//
-//        mockMvc.perform(put("/PutKoffie")
-//                .content(mapper.writeValueAsString(updateKoffie))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name", is("test2")))
-//                .andExpect(jsonPath("$.when_made", is("test2")))
-//                .andExpect(jsonPath("$.where_made", is("test2")))
-//                .andExpect(jsonPath("$.importants_ingredient", is("test2Update")))
-//                .andExpect(jsonPath("$.meaning", is("test2")))
-//                .andExpect(jsonPath("$.soort", is("test2")));
-//    }
+    @Test
+    public void givenKoffie_whenPutKoffie_thenReturnJsonKoffie() throws Exception{
+        Koffie Koffie = new Koffie(501L,"test2",
+                "test2",
+                "test2",
+                "test2",
+                "test2",
+                "test2");
+
+        given(koffieRepository.getByName("test2")).willReturn(Koffie);
+
+        Koffie updateKoffie = new Koffie(501L,"test2",
+                "test2",
+                "test2",
+                "test2Update",
+                "test2",
+                "test2");
+
+        mockMvc.perform(put("/PutKoffie")
+                .content(mapper.writeValueAsString(updateKoffie))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("test2")))
+                .andExpect(jsonPath("$.when_made", is("test2")))
+                .andExpect(jsonPath("$.where_made", is("test2")))
+                .andExpect(jsonPath("$.importants_ingredient", is("test2Update")))
+                .andExpect(jsonPath("$.meaning", is("test2")))
+                .andExpect(jsonPath("$.soort", is("test2")));
+    }
 
     @Test
     public void givenKoffie_whenDeleteKoffie_thenStatusOk() throws Exception{

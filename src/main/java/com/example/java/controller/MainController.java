@@ -45,7 +45,7 @@ public class MainController {
     @PutMapping ("/PutKoffie")
     public Koffie updateKoffie(@RequestBody Koffie updateKoffie)
     {
-        Koffie koffie = koffieRepository.getById(updateKoffie.getId());
+        Koffie koffie = koffieRepository.getByName(updateKoffie.getName());
         koffie.setName(updateKoffie.getName());
         koffie.setSoort(updateKoffie.getSoort());
         koffie.setMeaning(updateKoffie.getMeaning());
