@@ -151,11 +151,20 @@ public class UnitTest {
                 "test599",
                 "test599");
 
-        given(koffieRepository.findBySoortContainingAndAndNameContaining("test599","test599")).willReturn(koffieForDelete);
+        given(koffieRepository.getByName("test599")).willReturn(koffieForDelete);
 
-        mockMvc.perform(delete("/DeleteKoffie/{id}",599)
+        mockMvc.perform(delete("/DeleteKoffie/{name}","test599")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void givenKoffie_whenDeleteKoffie_thenStatusNotFound() throws Exception{
+        given(koffieRepository.getByName("test599")).willReturn(null);
+
+        mockMvc.perform(delete("/DeleteKoffie/{name}", "test599")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 }

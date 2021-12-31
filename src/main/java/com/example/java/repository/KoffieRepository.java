@@ -13,5 +13,6 @@ public interface KoffieRepository extends JpaRepository<Koffie, Long> {
     Koffie findBySoortContainingAndAndNameContaining(String soort, String name);
     @Query("SELECT coalesce(max(ks.id), 0) FROM Koffie ks")
     Long getMaxId();
+
     Koffie getByName(String naam);
 }

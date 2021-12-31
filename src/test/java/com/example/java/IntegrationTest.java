@@ -143,7 +143,7 @@ public class IntegrationTest {
 
     @Test
     public void givenKoffie_whenDeleteKoffie_thenStatusOk() throws Exception {
-        mockMvc.perform(delete("/DeleteKoffie/{id}", 503)
+        mockMvc.perform(delete("/DeleteKoffie/{name}", "AllesOke4")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
