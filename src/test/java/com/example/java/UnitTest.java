@@ -41,7 +41,8 @@ public class UnitTest {
                 "test1",
                 "test1",
                 "test1",
-                "test1");
+                "test1",
+                100);
 
         given(koffieRepository.findBySoortContainingAndAndNameContaining("test1","test1")).willReturn(koffie1);
 
@@ -63,13 +64,15 @@ public class UnitTest {
                 "test1",
                 "test1",
                 "test1",
-                "test1");
+                "test1",
+                101);
         Koffie koffie2 = new Koffie(501L,"test2",
                 "test2",
                 "test2",
                 "test2",
                 "test2",
-                "test2");
+                "test2",
+                102);
 
         List<Koffie> koffieList = new ArrayList<>();
         koffieList.add(koffie1);
@@ -96,7 +99,8 @@ public class UnitTest {
                 "test5",
                 "test5",
                 "test5",
-                "test5");
+                "test5",
+                103);
 
         mockMvc.perform(post("/PostKoffie")
                 .content(mapper.writeValueAsString(koffieForPost))
@@ -118,7 +122,8 @@ public class UnitTest {
                 "test2",
                 "test2",
                 "test2",
-                "test2");
+                "test2",
+                104);
 
         given(koffieRepository.getByName("test2")).willReturn(Koffie);
 
@@ -127,7 +132,8 @@ public class UnitTest {
                 "test2",
                 "test2Update",
                 "test2",
-                "test2");
+                "test2",
+                1005);
 
         mockMvc.perform(put("/PutKoffie")
                 .content(mapper.writeValueAsString(updateKoffie))
@@ -149,7 +155,8 @@ public class UnitTest {
                 "test599",
                 "test599",
                 "test599",
-                "test599");
+                "test599",
+                106);
 
         given(koffieRepository.getByName("test599")).willReturn(koffieForDelete);
 

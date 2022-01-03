@@ -15,6 +15,15 @@ public class MainController {
     @Autowired
     private KoffieRepository koffieRepository;
 
+    @PostConstruct
+    public void fillDB(){
+        if (koffieRepository.count() == 0){
+            koffieRepository.save(new Koffie(100L,"Espresso", "Italië","1900", "Koffie", "onder druk", "PureVorm", 1));
+            koffieRepository.save(new Koffie(101L,"Caffè machiato", "VS","1995", "Beetje melkschuim", "Gevlekte koffie", "MelkEnRoomVorm", 2));
+            koffieRepository.save(new Koffie(102L,"Barraquito", "Spanje","1900", "laag gecondenseerde melk", "", "AlcoholischeVorm", 3));
+        }
+    }
+
     @GetMapping ({"/AlleKoffie"})
     public List<Koffie> GetAll() {
         return koffieRepository.findAll();
@@ -57,22 +66,11 @@ public class MainController {
     public ResponseEntity deleteKoffie(@PathVariable String name)
     {
         Koffie koffie = koffieRepository.getByName(name);
-
-        if (koffie != null){
+        if(koffie!=null){
             koffieRepository.delete(koffie);
             return ResponseEntity.ok().build();
-        }
-        else{
+        }else{
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostConstruct
-    public void fillDB(){
-        if (koffieRepository.count() == 0){
-            koffieRepository.save(new Koffie(100L,"Espresso", "Italië","1900", "Koffie", "Koffie", "PureVorm"));
-            koffieRepository.save(new Koffie(101L,"Caffè macchiato", "VS","1995", "Beetje melkschuim", "Beetje melkschuim", "MelkEnRoomVorm"));
-            koffieRepository.save(new Koffie(102L,"Barraquito", "Spanje","1900", "laag gecondenseerde melk", "", "AlcoholischeVorm"));
         }
     }
 }

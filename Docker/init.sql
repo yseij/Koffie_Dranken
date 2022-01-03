@@ -54,8 +54,3 @@ VALUES
     (nextval('KoffieSoorten_sequence'), 'Noorse eierKoffie', 'EiVorm','Noorwegen', '1910', 'Rauw ei', 'komt uit Noorwegen'),
     (nextval('KoffieSoorten_sequence'), 'Vietnamese eierkoffie', 'EiVorm','Vietnam', '1918', '2 eierdooiers', 'komt uit Vietnam'),
     (nextval('KoffieSoorten_sequence'), 'Zweedse eierKoffie', 'EiVorm','Zweden', '1910', 'Rauw ei', 'komt uit Zweden');
-
-
-            koffieRepository.save(new Koffie(100L,"Espresso", "PureVorm","Italië", "1900", "Koffie", "onder druk"));
-            koffieRepository.save(new Koffie(101L,"Caffè macchiato", "MelkEnRoomVorm","VS", "1995", "Beetje melkschuim", "Gevlekte koffie"));
-            koffieRepository.save(new Koffie(102L,"Barraquito", "AlcoholischeVorm","Spanje", "1900", "laag gecondenseerde melk", ""));
