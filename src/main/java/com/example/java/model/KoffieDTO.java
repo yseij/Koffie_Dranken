@@ -1,14 +1,12 @@
 package com.example.java.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
 
-@Entity
-@Table(name = "`koffiesoorten`")
-public class Koffie {
+public class KoffieDTO {
     @Column(name = "id", nullable = false)
     @Id
     private Long id;
-
     private String name;
     private String wheremade;
     private String whenmade;
@@ -23,20 +21,6 @@ public class Koffie {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Koffie() {
-    }
-
-    public Koffie(Long id, String name, String wheremade, String whenmade, String importantsingredient, String meaning, String soort, String boonName) {
-        this.id = id;
-        this.name = name;
-        this.wheremade = wheremade;
-        this.whenmade = whenmade;
-        this.importantsingredient = importantsingredient;
-        this.meaning = meaning;
-        this.soort = soort;
-        this.boonName = boonName;
     }
 
     public String getName() {

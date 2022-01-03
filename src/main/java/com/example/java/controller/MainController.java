@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class MainController {
@@ -18,9 +17,9 @@ public class MainController {
     @PostConstruct
     public void fillDB(){
         if (koffieRepository.count() == 0){
-            koffieRepository.save(new Koffie(100L,"Espresso", "Italië","1900", "Koffie", "onder druk", "PureVorm", 1));
-            koffieRepository.save(new Koffie(101L,"Caffè machiato", "VS","1995", "Beetje melkschuim", "Gevlekte koffie", "MelkEnRoomVorm", 2));
-            koffieRepository.save(new Koffie(102L,"Barraquito", "Spanje","1900", "laag gecondenseerde melk", "", "AlcoholischeVorm", 3));
+            koffieRepository.save(new Koffie(100L,"Espresso", "Italië","1900", "Koffie", "onder druk", "PureVorm", "Coffea Arabica"));
+            koffieRepository.save(new Koffie(101L,"Caffè machiato", "VS","1995", "Beetje melkschuim", "Gevlekte koffie", "MelkEnRoomVorm", "Coffea Robusta"));
+            koffieRepository.save(new Koffie(102L,"Barraquito", "Spanje","1900", "laag gecondenseerde melk", "", "AlcoholischeVorm", "Coffea Liberica"));
         }
     }
 

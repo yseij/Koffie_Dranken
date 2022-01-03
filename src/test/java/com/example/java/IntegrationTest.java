@@ -31,35 +31,35 @@ public class IntegrationTest {
             "test1",
             "test1",
             "test1",
-            100);
+            "test1");
     private Koffie koffie2 = new Koffie(501L,"test2",
             "test2",
             "test2",
             "test2",
             "test2",
             "test2",
-            101);
+            "test2");
     private Koffie koffie3 = new Koffie(502L,"test3",
             "test3",
             "test3",
             "test3",
             "test3",
             "test3",
-            102);
+            "test3");
     private Koffie koffieForDelete = new Koffie(503L,"AllesOke4",
             "test4",
             "test4",
             "test4",
             "test4",
             "test4",
-            103);
+            "test4");
     private Koffie koffieForPost = new Koffie(504L, "test5",
             "test5",
             "test5",
             "test5",
             "test5",
             "test5",
-            104);
+            "test5");
 
     @BeforeEach
     public void beforeAllTests(){
@@ -132,7 +132,7 @@ public class IntegrationTest {
                 "test2Update",
                 "test2",
                 "test2",
-                105);
+                "test2");
 
         mockMvc.perform(put("/PutKoffie")
                 .content(mapper.writeValueAsString(updateKoffie))
