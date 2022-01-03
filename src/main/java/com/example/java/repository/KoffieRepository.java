@@ -11,8 +11,8 @@ import java.util.List;
 public interface KoffieRepository extends JpaRepository<Koffie, Long> {
     List<Koffie> findByNameContaining(String naam);
     Koffie findBySoortContainingAndAndNameContaining(String soort, String name);
-    @Query("SELECT coalesce(max(ks.id), 0) FROM Koffie ks")
-    Long getMaxId();
-
     Koffie getByName(String naam);
+
+    @Query("SELECT coalesce(max(ks.id), 0) FROM Koffie ks")
+    Long getMaxId();;
 }

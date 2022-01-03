@@ -85,11 +85,7 @@ public class Koffie {
         this.soort = soort;
     }
 
-    public String getBoonUID() {
-        return boonName;
-    }
+    public String getBoonName() {return boonName;}
 
-    public void setBoonUID(String boonName) {
-        this.boonName = boonName;
-    }
+    public void setBoonName(String boonName) {this.boonName = boonName;}
 }

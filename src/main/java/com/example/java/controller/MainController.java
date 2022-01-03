@@ -1,6 +1,7 @@
 package com.example.java.controller;
 
 import com.example.java.model.Koffie;
+import com.example.java.model.KoffieDTO;
 import com.example.java.repository.KoffieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,26 +40,29 @@ public class MainController {
     }
 
     @PostMapping("/PostKoffie")
-    public Koffie addKoffie(@RequestBody Koffie newKoffie)
+    public Koffie addKoffie(@RequestBody KoffieDTO koffieDTO)
     {
+        Koffie koffie = convertKoffieDTOToKoffie(koffieDTO);
         Long maxid = koffieRepository.getMaxId();
-        newKoffie.setId(maxid + 1);
-        koffieRepository.save(newKoffie);
-        return newKoffie;
+        koffie.setId(maxid + 1);
+        koffieRepository.save(koffie);
+        return koffie;
     }
 
     @PutMapping ("/PutKoffie")
-    public Koffie updateKoffie(@RequestBody Koffie updateKoffie)
+    public Koffie updateKoffie(@RequestBody KoffieDTO updateKoffieDTO)
     {
-        Koffie koffie = koffieRepository.getByName(updateKoffie.getName());
-        koffie.setName(updateKoffie.getName());
-        koffie.setSoort(updateKoffie.getSoort());
-        koffie.setMeaning(updateKoffie.getMeaning());
-        koffie.setWhen_made(updateKoffie.getWhen_made());
-        koffie.setWhere_made(updateKoffie.getWhere_made());
-        koffie.setImportants_ingredient(updateKoffie.getImportants_ingredient());
+        Koffie updatedKoffie = convertKoffieDTOToKoffie(updateKoffieDTO);
+
+        Koffie koffie = koffieRepository.getByName(updatedKoffie.getName());
+        koffie.setName(updatedKoffie.getName());
+        koffie.setSoort(updatedKoffie.getSoort());
+        koffie.setMeaning(updatedKoffie.getMeaning());
+        koffie.setWhen_made(updatedKoffie.getWhen_made());
+        koffie.setWhere_made(updatedKoffie.getWhere_made());
+        koffie.setImportants_ingredient(updatedKoffie.getImportants_ingredient());
         koffieRepository.save(koffie);
-        return updateKoffie;
+        return koffie;
     }
 
     @DeleteMapping("/DeleteKoffie/{name}")
@@ -71,5 +75,17 @@ public class MainController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private Koffie convertKoffieDTOToKoffie(KoffieDTO koffieDTO){
+        Koffie koffie = new Koffie();
+        koffie.setName(koffieDTO.getName());
+        koffie.setSoort(koffieDTO.getSoort());
+        koffie.setMeaning(koffieDTO.getMeaning());
+        koffie.setWhen_made(koffieDTO.getWhen_made());
+        koffie.setWhere_made(koffieDTO.getWhere_made());
+        koffie.setImportants_ingredient(koffieDTO.getImportants_ingredient());
+
+        return koffie;
     }
 }

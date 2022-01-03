@@ -15,9 +15,7 @@ public class KoffieDTO {
     private String soort;
     private String boonName;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
 
     public void setId(Long id) {
         this.id = id;
@@ -69,11 +67,7 @@ public class KoffieDTO {
         this.soort = soort;
     }
 
-    public String getBoonUID() {
-        return boonName;
-    }
+    public String getBoonName() { return boonName; }
 
-    public void setBoonUID(String boonName) {
-        this.boonName = boonName;
-    }
+    public void setBoonName(String boonName) { this.boonName = boonName; }
 }
