@@ -1,8 +1,12 @@
 package com.example.java.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "`koffiesoorten`")
 public class KoffieDTO {
     @Column(name = "id", nullable = false)
     @Id
