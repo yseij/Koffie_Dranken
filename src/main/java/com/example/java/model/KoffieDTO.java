@@ -13,7 +13,7 @@ public class KoffieDTO {
     private String importantsingredient;
     private String meaning;
     private String soort;
-    private String boonName;
+    private String boonname;
 
     public Long getId() {return id;}
 
@@ -67,7 +67,7 @@ public class KoffieDTO {
         this.soort = soort;
     }
 
-    public String getBoonName() { return boonName; }
+    public String getBoonName() { return boonname; }
 
-    public void setBoonName(String boonName) { this.boonName = boonName; }
+    public void setBoonName(String boonName) { this.boonname = boonName; }
 }

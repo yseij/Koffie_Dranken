@@ -61,6 +61,7 @@ public class MainController {
         koffie.setWhen_made(updatedKoffie.getWhen_made());
         koffie.setWhere_made(updatedKoffie.getWhere_made());
         koffie.setImportants_ingredient(updatedKoffie.getImportants_ingredient());
+        koffie.setBoonName(updatedKoffie.getBoonName());
         koffieRepository.save(koffie);
         return koffie;
     }
@@ -85,6 +86,7 @@ public class MainController {
         koffie.setWhen_made(koffieDTO.getWhen_made());
         koffie.setWhere_made(koffieDTO.getWhere_made());
         koffie.setImportants_ingredient(koffieDTO.getImportants_ingredient());
+        koffie.setBoonName(koffieDTO.getBoonName());
 
         return koffie;
     }

@@ -92,7 +92,8 @@ public class IntegrationTest {
                 .andExpect(jsonPath("$[0].where_made", is("test1")))
                 .andExpect(jsonPath("$[0].importants_ingredient", is("test1")))
                 .andExpect(jsonPath("$[0].meaning", is("test1")))
-                .andExpect(jsonPath("$[0].soort", is("test1")));
+                .andExpect(jsonPath("$[0].soort", is("test1")))
+                .andExpect(jsonPath("$[0].boonName", is("test1")));
     }
 
 
@@ -106,7 +107,8 @@ public class IntegrationTest {
                 .andExpect(jsonPath("$.where_made", is("test3")))
                 .andExpect(jsonPath("$.importants_ingredient", is("test3")))
                 .andExpect(jsonPath("$.meaning", is("test3")))
-                .andExpect(jsonPath("$.soort", is("test3")));
+                .andExpect(jsonPath("$.soort", is("test3")))
+                .andExpect(jsonPath("$.boonName", is("test3")));
     }
 
     @Test
@@ -121,7 +123,8 @@ public class IntegrationTest {
                 .andExpect(jsonPath("$.where_made", is("test5")))
                 .andExpect(jsonPath("$.importants_ingredient", is("test5")))
                 .andExpect(jsonPath("$.meaning", is("test5")))
-                .andExpect(jsonPath("$.soort", is("test5")));
+                .andExpect(jsonPath("$.soort", is("test5")))
+                .andExpect(jsonPath("$.boonName", is("test5")));
     }
 
     @Test
@@ -144,7 +147,8 @@ public class IntegrationTest {
                 .andExpect(jsonPath("$.where_made", is("test2")))
                 .andExpect(jsonPath("$.importants_ingredient", is("test2Update")))
                 .andExpect(jsonPath("$.meaning", is("test2")))
-                .andExpect(jsonPath("$.soort", is("test2")));
+                .andExpect(jsonPath("$.soort", is("test2")))
+                .andExpect(jsonPath("$.boonName", is("test2")));
     }
 
     @Test

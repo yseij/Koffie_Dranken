@@ -15,7 +15,7 @@ public class Koffie {
     private String importantsingredient;
     private String meaning;
     private String soort;
-    private String boonName;
+    private String boonname;
 
     public Long getId() {
         return id;
@@ -28,7 +28,7 @@ public class Koffie {
     public Koffie() {
     }
 
-    public Koffie(Long id, String name, String wheremade, String whenmade, String importantsingredient, String meaning, String soort, String boonName) {
+    public Koffie(Long id, String name, String wheremade, String whenmade, String importantsingredient, String meaning, String soort, String boonname) {
         this.id = id;
         this.name = name;
         this.wheremade = wheremade;
@@ -36,7 +36,7 @@ public class Koffie {
         this.importantsingredient = importantsingredient;
         this.meaning = meaning;
         this.soort = soort;
-        this.boonName = boonName;
+        this.boonname = boonname;
     }
 
     public String getName() {
@@ -85,7 +85,7 @@ public class Koffie {
         this.soort = soort;
     }
 
-    public String getBoonName() {return boonName;}
+    public String getBoonName() {return boonname;}
 
-    public void setBoonName(String boonName) {this.boonName = boonName;}
+    public void setBoonName(String boonName) {this.boonname = boonName;}
 }
